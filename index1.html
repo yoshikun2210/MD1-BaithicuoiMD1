@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css1.css">
+</head>
+<body>
+
+<div class="p-3 mb-2 bg-warning text-dark"><h1 class="text-light bg-dark">JAVASCRIPS MUSIC - OOP</h1>
+</div>
+
+
+<table border="1" style="width: 100%;background-color: moccasin; text-align: center">
+    <p id="validate"></p>
+    <input id="newCategory" type="text">&ensp;
+    <button class="btn btn-success" onclick="createCategory()">Create</button>
+    <tr class="table-danger">
+        <th>STT</th>
+        <th>CATEGORY</th>
+        <th>EDIT</th>
+        <th>DELETE</th>
+    </tr>
+    <tbody id="drawTable"></tbody>
+</table>
+<script>
+    class Category {
+        id;
+        name;
+
+        constructor(id, name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        getId() {
+            return this.id;
+        }
+
+        setId(id) {
+            this.id = id;
+        }
+
+        getName() {
+            return this.name;
+        }
+
+        setName(name) {
+            this.name = name;
+        }
+    }
+
+    let listCategory = [];
+    let category1 = new Category(1, 'nhạc vàng')
+    let category2 = new Category(2, 'nhạc đỏ')
+    let category3 = new Category(3, 'nhạc xanh')
+    let category4 = new Category(4, 'nhạc đen')
+
+    listCategory.push(category1, category2, category3, category4);
+
+    function showListCategory() {
+        let drawTable = '';
+        let class_tr = '';
+
+        for (let i = 0; i < listCategory.length; i++) {
+            drawTable += `<tr class="${class_tr}">
+                      <td>${listCategory[i].id}</td>
+                      <td>${listCategory[i].name}</td>
+                      <td><button class="btn btn-info" onclick="updateCategory(${listCategory[i].id})"><i class="bi bi-pencil-fill"></i></button></td>
+                      <td><button class="btn btn-danger" onclick="deleteCategory(${listCategory[i].id})" ><i class="bi bi-trash"></i></button></td>
+
+</tr>`
+        }
+        document.getElementById('drawTable').innerHTML = drawTable;
+    }
+
+    showListCategory();
+
+    function createCategory() {
+        let newCategory = document.getElementById('newCategory').value
+        let check = true
+        if (newCategory.trim() === '') {
+            document.getElementById('validate').innerHTML = '<span style="background-color:red">Category can`t be blank</span>'
+            return;
+
+        } else {
+            for (let a = 0; a < listCategory.length; a++) {
+                if (newCategory.toLowerCase() === listCategory[a].name.toLowerCase()) {
+                    check = false
+                }
+
+            }
+            if (!check) {
+                document.getElementById('validate').innerHTML = '<span style="color: red">Đã có Category</span>'
+            }
+
+        }
+        if (check) {
+            listCategory.push(new Category(listCategory[listCategory.length - 1].id + 1, newCategory))
+            document.getElementById('validate').innerHTML = '<span style="color: lawngreen">Create Category Success!!</span>'
+        }
+
+        showListCategory();
+    }
+
+    function updateCategory(id) {
+        for (let i = 0; i < listCategory.length; i++) {
+            if (listCategory[i].id == id) {
+                let editCategory = prompt('Edit Category: ', listCategory[i].name)
+                listCategory[i].setName(editCategory)
+            }
+        }
+        showListCategory();
+    }
+
+    function deleteCategory(id) {
+        for (let i = 0; i < listCategory.length; i++) {
+            if (listCategory[i].id == id) {
+                listCategory.splice(i, 1);
+            }
+        }
+        showListCategory();
+    }
+
+</script>
+<h5>Name Song:</h5>
+<input type="text">
+<h5>Lyrics</h5>
+<textarea rows="5" cols="50" ></textarea>
+<select>
+    <option>Nhạc vàng</option>
+    <option>Nhạc đỏ</option>
+    <option>Nhạc xanh</option>
+    <option>Nhạc đen</option>
+</select>
+<br><button>Create Song</button>
+</body>
+</html>
